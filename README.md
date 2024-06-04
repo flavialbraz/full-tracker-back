@@ -11,17 +11,21 @@ GymTracker Backend é um servidor Node.js construído com Express que serve como
 
 ## Estrutura do Projeto
 ```
-GymTrackerBackend/
+gym-tracker-backend/
 ├── src/
-│  ├── controllers/
-│  │  ├── userController.ts
-│  ├── models/
-│  │  ├── User.ts
-│  ├── routes/
-│  │  ├── userRoutes.ts
-│  ├── services/
-│  │  ├── authService.ts
-│  ├── index.ts
+│   ├── controllers/
+│   │   ├── authController.ts
+│   │   ├── userController.ts
+│   ├── middlewares/
+│   │   ├── authMiddleware.ts
+│   ├── models/
+│   │   ├── User.ts
+│   ├── routes/
+│   │   ├── authRoutes.ts
+│   │   ├── userRoutes.ts
+│   ├── services/
+│   │   ├── authService.ts
+│   ├── index.ts
 ├── .env
 ├── package.json
 ├── tsconfig.json
@@ -34,7 +38,7 @@ GymTrackerBackend/
 1. Certifique-se de ter o Node.js e o npm instalados em seu sistema.
 2. Clone este repositório para o seu ambiente local:
 ```
-   git clone https://github.com/flavialbraz/full-tracker-back.git
+git clone https://github.com/flavialbraz/full-tracker-back.git
 ```
 3. Navegue até o diretório do projeto:
 ```
@@ -53,18 +57,66 @@ FRONTEND_URL_LOCAL=http://localhost:3000
 ```
 
 ## Uso
-1. Inicie o servidor:
+1. Compile o projeto TypeScript:
+```
+npm run build
+```
+2. Inicie o servidor:
 ```
 npm start
 ```
-2. A API estará disponível em http://localhost:5000.
+3. A API estará disponível em http://localhost:5000.
 
 ## Endpoints da API
+
+#### Autenticação
+1. Registro de usuário
+```
+POST /api/auth/register
+```
+Corpo da requisição:
+```
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+Resposta:
+```
+{
+  "_id": "user_id",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "token": "jwt_token"
+}
+```
+
+2. Login de usuário
+```
+POST /api/auth/login
+```
+Corpo da requisição:
+```
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+Resposta:
+```
+{
+  "_id": "user_id",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "token": "jwt_token"
+}
+```
 
 #### Usuários
 1. Obter todos os usuários
 ```
-GET /users
+GET /api/users
 ```
 Resposta:
 ```
@@ -77,31 +129,9 @@ Resposta:
 ]
 ```
 
-2. Criar um novo usuário
+2. Obter um usuário pelo ID
 ```
-POST /users
-```
-Corpo da requisição:
-```
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-Resposta:
-
-```
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "attendedDates": []
-}
-```
-
-3. Obter um usuário pelo ID
-```
-GET /users/:id
+GET /api/users/:id
 ```
 Resposta:
 ```
@@ -111,9 +141,9 @@ Resposta:
   "attendedDates": ["2023-01-01T00:00:00.000Z"]
 }
 ``` 
-4. Atualizar participação na academia por data
+3. Atualizar participação na academia por data
 ```
-PUT /users/:date
+PUT /api/users/:date
 ```
 Corpo da requisição:
 ```
@@ -129,9 +159,9 @@ Resposta:
   "attendedDates": ["2023-01-01T00:00:00.000Z", "2023-01-02T00:00:00.000Z"]
 }
 ```
-5. Deletar um usuário pelo ID
+4. Deletar um usuário pelo ID
 ```
-DELETE /users/:id
+DELETE /api/users/:id
 ```
 Resposta:
 
